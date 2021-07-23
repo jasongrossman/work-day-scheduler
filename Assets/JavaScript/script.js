@@ -1,7 +1,7 @@
 var now = moment().format("dddd, MMMM Do YYYY, h:mm a");
 var currentHour = moment().hours();
 var todaysDate = $("#currentDay").text(now);
-var meetingInfo = $("#meeting-info").value
+var meetingInfo = $("#meeting-info").value;
 
 
     //load meeting information from local storage and populate into time blocks
@@ -12,20 +12,25 @@ var meetingInfo = $("#meeting-info").value
         .text()
         .trim();
 
-        var meetingInfo = $("<textarea>")
-        // .addClass("description")
-        .val(text);
-
+        meetingInfo = $("<textarea>")
+        .val(text)
+        .addClass("time-block")
         console.log("you tried to put in meeting info");
+
+        //put meetingInfo value into the textarea element
         $(this).replaceWith(meetingInfo);
         meetingInfo.trigger("focus");
     });
 
-    //save meeting function, adding meeting info to local storage
-    var saveMeetings = function() {
+    //add event listener, which starts function to save meeting, adding meeting info to local storage
+    $(".saveBtn").on("click", function() {
+        var savedMeeting = meetingInfo.val();
+        var savedTime = $(this).closest(".hour").index();
         console.log("you tried to save your meeting");
-        localStorage.setItem("meetingInfo", JSON.stringify(meetingInfo));
-      };
+        console.log(savedTime);
+        console.log(savedMeeting);
+        localStorage.setItem(savedMeeting, savedTime);
+    });
 
     //conditionally format time blocks based on whether they are in the past present or future
       var formatBackground = function() {
@@ -48,9 +53,6 @@ var meetingInfo = $("#meeting-info").value
           });
       }
     
-
-    //add event listener to save button to activate save meetings function
-    $(".saveBtn").on("click", saveMeetings);
 
     //retrieve data from local storage
 
