@@ -9,18 +9,24 @@ var meetingDetails = [];
 
     //add event listener to open form text input for adding meeting info
     $(".description").on("click", function() {
+        //grab text input
         var text = $(this)
         .text()
         .trim();
 
+        //add text to variable
         meetingInfo = $("<textarea>")
         .val(text)
-        .addClass("time-block")
-        console.log("you tried to put in meeting info");
+        .addClass("description col-sm-8");
+
 
         //put meetingInfo value into the textarea element
         $(this).replaceWith(meetingInfo);
         meetingInfo.trigger("focus");
+    });
+
+    $(".description").on("blur", function() {
+        $(this).addClass("description col-sm-8");
     });
 
     //add event listener, which starts function to save meeting, adding meeting info to local storage
@@ -31,10 +37,7 @@ var meetingDetails = [];
             savedMeeting,
             savedTime
         }
-        // console.log(savedTime);
-        // console.log(savedMeeting);
         localStorage.setItem(meetingDetails.savedTime, JSON.stringify(meetingDetails.savedMeeting));
-        console.log(localStorage);
     });
 
     //conditionally format time blocks based on whether they are in the past present or future
@@ -58,11 +61,8 @@ var meetingDetails = [];
           });
       }
       
+      //populate time blocks with any saved meeting details in local storage based on index position
       var loadMeetings = function() {
-        // meetingDetails = JSON.parse(localStorage.getItem("0"));
-        // console.log(meetingDetails);
-        // savedMeeting = localStorage.getItem("savedMeeting");
-        // JSON.parse(localStorage.getItem("savedMeeting"));
         $(".time-block #9hr").text(JSON.parse(localStorage.getItem("0")));
         $(".time-block #10hr").text(JSON.parse(localStorage.getItem("1")));
         $(".time-block #11hr").text(JSON.parse(localStorage.getItem("2")));
@@ -74,29 +74,8 @@ var meetingDetails = [];
 
       }
 
-    //retrieve data from local storage
-        // meetings = JSON.parse(localStorage.getItem("savedTime"));
-        // console.log(meetings);
-        //     // savedMeeting = JSON.parse(localStorage.getItem("tasks"));
-        // $("#9hr .description").val(JSON.parse(localStorage.getItem("savedTime")));
-        // // if nothing in localStorage, create a new object to track all task status arrays
-        // if (!tasks) {
-        //   tasks = {
-        //     toDo: [],
-        //     inProgress: [],
-        //     inReview: [],
-        //     done: []
-        //   };
-        // }
-      
-        // loop over object properties
-        // $.each(meetings, console.log("meeting found"));
-    
-        // });
-    //   };
-      
-    //add any local storage data into time blocks    
-
 // format time block backgrounds upon page load
 formatBackground();
+
+//run function to load meetings saved in local storage
 loadMeetings();
